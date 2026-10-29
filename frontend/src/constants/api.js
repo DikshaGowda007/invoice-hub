@@ -9,6 +9,10 @@ export const API = {
   DASHBOARD: {
     SUMMARY: '/dashboard/summary',
   },
+  BUSINESS_PROFILE: {
+    GET: '/business-profile/get',
+    UPDATE: '/business-profile/update',
+  },
   CLIENTS: {
     LIST: '/clients/list',
     GET: '/clients/get',

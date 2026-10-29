@@ -18,6 +18,7 @@ import PublicInvoicePage from '@/features/invoices/pages/PublicInvoicePage'
 import RecurringInvoiceDetailPage from '@/features/recurringInvoices/pages/RecurringInvoiceDetailPage'
 import RecurringInvoiceFormPage from '@/features/recurringInvoices/pages/RecurringInvoiceFormPage'
 import RecurringInvoiceListPage from '@/features/recurringInvoices/pages/RecurringInvoiceListPage'
+import SettingsPage from '@/features/settings/pages/SettingsPage'
 import { AppLayout } from '@/layouts/AppLayout'
 import ComingSoonPage from './ComingSoonPage'
 
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
           { path: ROUTES.RECURRING_INVOICE_NEW, element: <RecurringInvoiceFormPage /> },
           { path: ROUTES.RECURRING_INVOICE_EDIT, element: <RecurringInvoiceFormPage /> },
           { path: ROUTES.RECURRING_INVOICE_DETAIL, element: <RecurringInvoiceDetailPage /> },
-          { path: ROUTES.SETTINGS, element: <ComingSoonPage /> },
+          { path: ROUTES.SETTINGS, element: <SettingsPage /> },
         ],
       },
     ],

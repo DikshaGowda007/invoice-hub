@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BusinessProfile\BusinessProfileController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Invoice\InvoiceController;
@@ -71,6 +72,11 @@ Route::prefix('invoices/public')->middleware('throttle:30,1')->group(function ()
 
 Route::prefix('dashboard')->middleware(['jwt.verify'])->group(function () {
     Route::post('/summary', [DashboardController::class, 'summary'])->name('DashboardController.summary');
+});
+
+Route::prefix('business-profile')->middleware(['jwt.verify'])->group(function () {
+    Route::post('/get', [BusinessProfileController::class, 'get'])->name('BusinessProfileController.get');
+    Route::post('/update', [BusinessProfileController::class, 'update'])->name('BusinessProfileController.update');
 });
 
 Route::prefix('recurring-invoices')->middleware(['jwt.verify'])->group(function () {

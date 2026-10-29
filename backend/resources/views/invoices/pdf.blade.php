@@ -187,8 +187,17 @@
                     <tr>
                         <td style="width: 48%; vertical-align: top;">
                             <div class="section-label">From</div>
-                            <div class="party-name">{{ $business->get('firstName') }} {{ $business->get('lastName') }}</div>
+                            <div class="party-name">{{ $business->get('displayName') }}</div>
                             <div class="party-line">{{ $business->get('email') }}</div>
+                            @if ($business->get('phone'))
+                                <div class="party-line">{{ $business->get('phone') }}</div>
+                            @endif
+                            @if ($business->get('address'))
+                                <div class="party-line">{{ $business->get('address') }}</div>
+                            @endif
+                            @if ($business->get('taxId'))
+                                <div class="party-line">Tax ID: {{ $business->get('taxId') }}</div>
+                            @endif
                         </td>
                         <td style="width: 4%;"></td>
                         <td style="width: 48%; vertical-align: top;">
