@@ -77,6 +77,15 @@ class InvoiceRepositoryImpl implements InvoiceRepository
             ->get();
     }
 
+    public function findByStatusAndDueDate(string $status, string $date): Collection
+    {
+        return Invoice::with('client')
+            ->where('status', $status)
+            ->where('due_date', '<', $date)
+            ->where('is_deleted', CommonConstant::IS_DELETED_NO)
+            ->get();
+    }
+
     public function findByPublicToken(string $publicToken): Collection
     {
         return Invoice::with('client')

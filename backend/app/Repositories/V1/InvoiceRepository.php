@@ -25,5 +25,7 @@ interface InvoiceRepository
 
     public function findByRazorpayOrderId(string $razorpayOrderId): Collection;
 
+    public function findByStatusAndDueDate(string $status, string $date): Collection;
+
     public function findByPublicToken(string $publicToken): Collection;
 }
