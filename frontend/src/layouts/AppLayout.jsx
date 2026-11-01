@@ -1,6 +1,7 @@
-import { LogOut } from 'lucide-react'
+import { LogOut, Moon, Sun } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
+import { useTheme } from '@/context/ThemeContext'
 import { ROUTES } from '@/utils/routePaths'
 
 const navItemClassName = ({ isActive }) =>
@@ -70,6 +71,7 @@ function SettingsIcon() {
 
 export function AppLayout() {
   const { user, logout } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const initials = (user?.name ?? '')
     .split(' ')
     .map((part) => part[0])
@@ -124,6 +126,14 @@ export function AppLayout() {
             <p className="truncate text-[13px] font-medium">{user?.name}</p>
             <p className="truncate text-[11.5px] text-muted-foreground">{user?.email}</p>
           </div>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
           <button
             type="button"
             onClick={logout}
