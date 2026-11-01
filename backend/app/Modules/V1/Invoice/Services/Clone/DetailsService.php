@@ -30,14 +30,14 @@ class DetailsService
         $originalLineItems = $this->invoiceLineItemRepository->findByInvoiceId($id);
 
         $clonedInvoice = $this->cloneInvoice($original, $userId);
-        $this->cloneLineItems($originalLineItems, $clonedInvoice->id);
+        $this->cloneLineItems($originalLineItems, collect($clonedInvoice)->get('id'));
 
         return CommonUtils::successDataResponse([
             'invoice' => $this->formatInvoice(collect($clonedInvoice)),
         ]);
     }
 
-    private function findInvoiceOrFail(int $id, int $userId): Invoice
+    private function findInvoiceOrFail(int $id, int $userId): Collection
     {
         $invoice = $this->invoiceRepository->findByIdAndUserId($id, $userId)->first();
 
@@ -45,23 +45,23 @@ class DetailsService
             throw DataNotFoundException::withMessage('Invoice not found.');
         }
 
-        return $invoice;
+        return collect($invoice);
     }
 
-    private function cloneInvoice(Invoice $original, int $userId): Invoice
+    private function cloneInvoice(Collection $original, int $userId): Invoice
     {
         $invoiceDao = new InvoiceDAO;
         $invoiceDao->setUserId($userId);
-        $invoiceDao->setClientId($original->client_id);
+        $invoiceDao->setClientId($original->get('client_id'));
         $invoiceDao->setInvoiceNumber($this->invoiceHelper->generateInvoiceNumber($userId));
         $invoiceDao->setIssueDate(now()->toDateString());
-        $invoiceDao->setTaxRate((float) $original->tax_rate);
-        $invoiceDao->setDiscountAmount((float) $original->discount_amount);
-        $invoiceDao->setNotes($original->notes);
+        $invoiceDao->setTaxRate((float) $original->get('tax_rate'));
+        $invoiceDao->setDiscountAmount((float) $original->get('discount_amount'));
+        $invoiceDao->setNotes($original->get('notes'));
         $invoiceDao->setStatus(InvoiceConstants::STATUS_DRAFT);
-        $invoiceDao->setSubtotal((float) $original->subtotal);
-        $invoiceDao->setTaxAmount((float) $original->tax_amount);
-        $invoiceDao->setTotal((float) $original->total);
+        $invoiceDao->setSubtotal((float) $original->get('subtotal'));
+        $invoiceDao->setTaxAmount((float) $original->get('tax_amount'));
+        $invoiceDao->setTotal((float) $original->get('total'));
 
         return $this->invoiceRepository->insert($invoiceDao);
     }
@@ -69,12 +69,14 @@ class DetailsService
     private function cloneLineItems(Collection $originalLineItems, int $newInvoiceId): void
     {
         foreach ($originalLineItems as $lineItem) {
+            $lineItem = collect($lineItem);
+
             $lineItemDao = new InvoiceLineItemDAO;
             $lineItemDao->setInvoiceId($newInvoiceId);
-            $lineItemDao->setDescription($lineItem->description);
-            $lineItemDao->setQuantity((float) $lineItem->quantity);
-            $lineItemDao->setUnitPrice((float) $lineItem->unit_price);
-            $lineItemDao->setLineTotal((float) $lineItem->line_total);
+            $lineItemDao->setDescription($lineItem->get('description'));
+            $lineItemDao->setQuantity((float) $lineItem->get('quantity'));
+            $lineItemDao->setUnitPrice((float) $lineItem->get('unit_price'));
+            $lineItemDao->setLineTotal((float) $lineItem->get('line_total'));
 
             $this->invoiceLineItemRepository->insert($lineItemDao);
         }
