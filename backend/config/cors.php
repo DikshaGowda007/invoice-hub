@@ -9,7 +9,7 @@ return [
         'http://localhost:5174',
         'http://127.0.0.1:5174',
         'http://127.0.0.1:8000',
-        'https://invoice-temp.pages.dev',
+        'https://invoice-hub-1o1.pages.dev',
     ],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
