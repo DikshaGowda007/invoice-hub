@@ -42,6 +42,13 @@ class AuthController extends Controller
                 CommonUtils::errorResponse($e->getMessage()),
                 HttpStatusConstant::UNAUTHORIZED,
             );
+        } catch (\Throwable $e) {
+            report($e);
+
+            return response()->json(
+                CommonUtils::errorResponse($e->getMessage()),
+                HttpStatusConstant::INTERNAL_SERVER_ERROR,
+            );
         }
     }
 

@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Constants\CommonConstant;
+use App\Constants\HttpStatusConstant;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RegisterRequest extends FormRequest
 {
@@ -22,6 +26,15 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $firstError = $validator->errors()->first();
+        throw new HttpResponseException(response()->json([
+            'status' => CommonConstant::ERROR,
+            'message' => $firstError,
+        ], HttpStatusConstant::UNPROCESSABLE_ENTITY));
     }
 
     public function attributes(): array
