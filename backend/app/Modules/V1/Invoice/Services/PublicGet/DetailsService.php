@@ -30,20 +30,28 @@ class DetailsService
     {
         $invoice = $this->invoiceRepository->findByPublicToken($token)->first();
 
-        if (! $invoice || $this->isExpired($invoice)) {
+        if (! $invoice) {
             throw DataNotFoundException::withMessage('This payment link is invalid or has expired.');
         }
 
-        return collect($invoice);
+        $invoice = collect($invoice);
+
+        if ($this->isExpired($invoice)) {
+            throw DataNotFoundException::withMessage('This payment link is invalid or has expired.');
+        }
+
+        return $invoice;
     }
 
-    private function isExpired(object $invoice): bool
+    private function isExpired(Collection $invoice): bool
     {
-        if (! $invoice->public_token_expires_at) {
+        $expiresAt = $invoice->get('public_token_expires_at');
+
+        if (! $expiresAt) {
             return false;
         }
 
-        return Carbon::parse($invoice->public_token_expires_at)->isPast();
+        return Carbon::parse($expiresAt)->isPast();
     }
 
     private function formatInvoice(Collection $invoice, Collection $lineItems): array
