@@ -2,8 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Client;
-use App\Models\Invoice;
+use App\Modules\V1\Invoice\Dto\InvoiceReceiptMailDto;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -15,14 +14,13 @@ class InvoiceReceiptMail extends Mailable
     use Queueable, SerializesModels;
 
     public function __construct(
-        public Invoice $invoice,
-        public Client $client,
+        public InvoiceReceiptMailDto $dto,
     ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Payment received for invoice '.$this->invoice->invoice_number,
+            subject: 'Payment received for invoice '.$this->dto->getInvoiceNumber(),
         );
     }
 
@@ -32,10 +30,10 @@ class InvoiceReceiptMail extends Mailable
             view: 'emails.invoice_receipt',
             text: 'emails.invoice_receipt_text',
             with: [
-                'clientName' => $this->client->name,
-                'invoiceNumber' => $this->invoice->invoice_number,
-                'total' => $this->invoice->total,
-                'issueDate' => $this->invoice->issue_date,
+                'clientName' => $this->dto->getClientName(),
+                'invoiceNumber' => $this->dto->getInvoiceNumber(),
+                'total' => $this->dto->getTotal(),
+                'issueDate' => $this->dto->getIssueDate(),
             ],
         );
     }
