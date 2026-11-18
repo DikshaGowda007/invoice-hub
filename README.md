@@ -2,6 +2,10 @@
 
 🔗 **Live Demo:** https://invoice-hub-1o1.pages.dev
 
+Log in to the live demo with the seeded account below to explore the dashboard, clients, and invoices with realistic sample data:
+
+**Demo Login:** `demo@invoicehub.app` / `Demo@12345`
+
 A full-stack invoicing and billing SaaS built with a headless Laravel REST API and a React frontend. Business owners manage clients and invoices, generate branded PDF invoices, collect payments online via Razorpay (including a no-login public payment link), and track revenue through a live dashboard. The backend follows a strict Controller → Service → Repository → DAO layering with Redis-backed queues for async work, scheduled jobs for recurring invoices and overdue detection, and an event-driven notification pipeline. The frontend is built with React, TanStack Query, Tailwind CSS, and shadcn/ui.
 
 ## Screenshots
